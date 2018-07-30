@@ -28,10 +28,13 @@ const portNumber = 3000;
 const router = express.Router();
 
 function processNote(note) {
-    // write note.tags
-    // write note.markdown
-    // write new line
-    //fs.appendFileSync(repoMainFile, text)
+    var text = "# ";
+    note.tags.forEach(function (tag, index, array) {
+        text += tag;
+        if (index !== array.length -1) text += ', ';
+    });
+    text += "\n" + note.markdown + "\n";
+    fs.appendFileSync(repoMainFile, text, 'utf-8');
 }
 router.route('/notes').get(function(req, res, next) {
     res.json("that's all you get for now!");
@@ -39,7 +42,7 @@ router.route('/notes').get(function(req, res, next) {
 router.route('/note').post(function(req, res, next) {
    console.log(req.body);
    var note = JSON.parse(req.body); // TODO: check the structure
-   res.json("whatever"); 
+   res.json("OK"); 
 });
 
 //rest API requirements
@@ -53,4 +56,4 @@ app.use('/api/v1', router);
 
 console.log("Note Server is running on port " + portNumber);
 app.listen(portNumber);
-// yaml2json swagger.yaml -p -i4
+//
