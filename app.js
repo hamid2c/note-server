@@ -28,7 +28,7 @@ const portNumber = 3000;
 const router = express.Router();
 
 function processNote(note) {
-    var text = "# ";
+    var text = "\n# ";
     note.tags.forEach(function (tag, index, array) {
         text += tag;
         if (index !== array.length -1) text += ', ';
@@ -41,13 +41,14 @@ router.route('/notes').get(function(req, res, next) {
 });
 router.route('/note').post(function(req, res, next) {
    console.log(req.body);
-   var note = JSON.parse(req.body); // TODO: check the structure
+   var note = req.body; // TODO: check the structure
+   processNote(note);
    res.json("OK"); 
 });
 
 //rest API requirements
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: false
   }));
 app.use(bodyParser.json());
 
