@@ -46,11 +46,18 @@ router.route('/note').post(function(req, res, next) {
    res.json("OK"); 
 });
 
+
 //rest API requirements
 app.use(bodyParser.urlencoded({
-    extended: false
+    extended: true
   }));
 app.use(bodyParser.json());
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', router);
