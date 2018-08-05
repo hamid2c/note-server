@@ -23,7 +23,7 @@ if (gitRepoPath === undefined) {
 }
 
 const repoMainFile = path.join(gitRepoPath, "main.md");
-const portNumber = 3000;
+const portNumber = 3300;
 
 const router = express.Router();
 
