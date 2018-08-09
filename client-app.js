@@ -5,6 +5,8 @@ import './App.css';
 const ESC_KEYCODE = 27;
 const ALT_KEYCODE = 18;
 const BASE_URL = 'http://127.0.0.1:3300/api/v1/';
+const TAGS_BOX_NAME = "tags-box";
+const MARKDOWN_BOX_NAME = "markdown-box";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -38,7 +40,9 @@ class InputForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.state = {tagsValue: "", markdownValue: ""};
+    this.handleMarkdownChange = this.handleMarkdownChange.bind(this);
+    this.handleTagsChange = this.handleTagsChange.bind(this);
+    this.state = {targsValue: "", markdownValue: ""};
   }
   handleKeyDown = function(e) {
     
@@ -57,27 +61,42 @@ class InputForm extends React.Component {
     //   });
     // }
     const funcs = {};
-    funcs[ESC_KEYCODE] = function() {
-      console.log("ESC!");
+    funcs[ESC_KEYCODE] = function(inputBox) {
+      console.log("ESC! " + inputBox.name + " " + inputBox.value);
+      // trigger a state change to reset the input values.
     }
-    funcs[ALT_KEYCODE] = function() {
-      console.log("ALT!");
+    funcs[ALT_KEYCODE] = function(inputBox) {
+      console.log("ALT! "+ inputBox.name + " " + inputBox.value);
     }
     const action = funcs[e.keyCode];
-    if (action === undefined) {
-      console.log(e.keyCode + " has not been mapped to any action");
-    } else {
-      action();
+    if (action !== undefined) {
+      console.log("target value is " + e.target.value);
+      if (e.target.name === TAGS_BOX_NAME) {
+        
+      } else if (e.target.name === MARKDOWN_BOX_NAME) {
+        
+      }
+      action.apply(this, [e.target]);
     }
   }
-  // tags: input value={this.state.tagsValue} onChange={}
+
+  handleTagsChange = function(e) {
+    this.setState({tagsValue: e.target.value});
+  }
+
+  handleMarkdownChange = function(e) {
+    this.setState({markdownValue: e.target.value});
+  }
+
   render() {
     return (
       <form>
-        tags: <input type='text'  onKeyDown={this.handleKeyDown} />
+        tags: <input type='text' name={TAGS_BOX_NAME} value={this.state.tagsValue} 
+                onKeyDown={this.handleKeyDown} onChange={this.hanndleTagsChange} />
         <br />
-        Text:
-        <input type='text'  onKeyDown={this.handleKeyDown} />
+        Markdown:
+        <input type='text' name={MARKDOWN_BOX_NAME}  value={this.state.markdownValue} 
+        onKeyDown={this.handleKeyDown} onChange={this.handleMarkdownChange} />
       </form>
     );
   }
