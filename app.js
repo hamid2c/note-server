@@ -22,7 +22,7 @@ if (gitRepoPath === undefined) {
     process.exit(1);
 }
 
-const repoMainFile = path.join(gitRepoPath, "main.md");
+const repoMainFile = path.join(gitRepoPath, "README.md");
 const portNumber = 3300;
 
 const router = express.Router();
