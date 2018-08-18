@@ -1,3 +1,5 @@
+"use strict";
+
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -49,6 +51,9 @@ class App extends Component {
 }
 
 class InputForm extends React.Component {
+  prevTagsValue = "";
+  prevMakdownValue = "";
+
   constructor(props) {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -61,13 +66,21 @@ class InputForm extends React.Component {
   makeRequest = function () {
     let tags = getTags(this.state.tagsValue);
     let markdown = this.state.markdownValue.trim();
+    
+    if (this.state.tagsValue === this.prevTagsValue && 
+            this.state.markdownValue === this.prevMakdownValue) {
+      this.props.notifyAboutResponse("These values have been sent already.");
+      return;
+    }
+
     const thiz = this;
     axiosInstance.post('/note', {
       markdown: markdown,
       tags: tags
     }).then(function (response) {
-      console.log(response);
       thiz.props.notifyAboutResponse(response.status);
+      thiz.prevMakdownValue = thiz.state.markdownValue;
+      thiz.prevTagsValue = thiz.state.tagsValue;
     }).catch(function (error) {
       let errMsg = (error.message === undefined)?"UNKNOWN SERVER ERROR":error.message;
       thiz.props.notifyAboutResponse(errMsg);
