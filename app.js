@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const execSync = require('child_process').execSync;
 const path = require('path');
 const fs = require('fs');
+const showdown = require("showdown");
 
 function runCmd(cmd) {
     console.log("CMD: " + cmd);
@@ -16,7 +17,7 @@ function runCmd(cmd) {
 
 
 const gitRepoPath = process.env.GIT_REPO_PATH;
-// check user input
+// Check user input
 if (gitRepoPath === undefined) {
     console.log("The path to the Git repository should be defined as GIT_REPO_PATH environment variable");
     process.exit(1);
@@ -27,6 +28,18 @@ const portNumber = 3300;
 
 const router = express.Router();
 
+function convertToHtml() {
+    const text = fs.readFileSync(repoMainFile, 'utf-8');
+    const converter = new showdown.Converter();
+    const html = converter.makeHtml(text);
+    fs.writeFile(path.join(gitRepoPath, "index.html"), 
+              html, 'utf8', function(err) {
+                  if (err) {
+                      console.log("Error in writing html to file");
+                  }
+              });
+}
+
 function processNote(note) {
     var text = "\n# ";
     note.tags.forEach(function (tag, index, array) {
@@ -35,9 +48,10 @@ function processNote(note) {
     });
     text += "\n" + note.markdown + "\n";
     fs.appendFileSync(repoMainFile, text, 'utf-8');
+    convertToHtml();
 }
 router.route('/notes').get(function(req, res, next) {
-    res.json("that's all you get for now!");
+    res.json("That's all you get for now!");
 });
 router.route('/note').post(function(req, res, next) {
    console.log(req.body);

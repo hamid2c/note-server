@@ -1,0 +1,42 @@
+{
+    "name": "note-server",
+    "version": "0.0.1",
+    "description": "Note Server",
+    "main": ".index.js",
+    "files": [
+      "static",
+      "package.json",
+      "index.js",
+      "LICENSE"
+    ],
+    "scripts": {
+      "test": "./node_modules/.bin/mocha test/*"
+    },
+    "keywords": [
+      "swagger",
+      "express",
+      "note server"
+    ],
+    "private": false,
+    "engines": {
+      "node": ">= v0.10.32"
+    },
+    "devDependencies": {
+        "swagger-ui-express": "latest",
+        "express": "latest",
+        "showdown": "latest"
+    },
+    "author": {
+      "name": "Hamid A. Toussi"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git@github.com:hamid2c/note-server.git"
+    },
+    "license": "MIT",
+    "readmeFilename": "README.md",
+    "bugs": {
+      "url": "https://github.com/hamid2c/note-server/issues"
+    },
+    "homepage": "https://github.com/hamid2c/note-server"
+  }
